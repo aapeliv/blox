@@ -1,0 +1,1 @@
+make windows_i686 windows_i686_static1 windows_i686_static2 windows_i686_static3 linux_debug linux_release
