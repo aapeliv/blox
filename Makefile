@@ -30,26 +30,23 @@ builds: win-build linux-build mac-build
 win-pkg: win-build
 	mkdir windows
 	cp skel/licenses/* windows
-	cp skel/readmes/Readme.txt windows
 	cp skel/dlls/* windows
 	cp bin/$(name)Windows$(winext) windows/$(name)$(winext)
-	sed -i '' -e 's/${version}/'"$(version)"'/' windows/Readme.txt
+	sed -e 's/{{version}}/'"$(version)"'/g' skel/readmes/Readme.txt > windows/Readme.txt
 	cd windows && zip $(name)Windows.zip * && cp $(name)Windows.zip ../pkg
 
 linux-pkg: linux-build
 	mkdir linux
 	cp skel/licenses/* linux
-	cp skel/readmes/Readme linux
 	cp bin/$(name)Linux linux/$(name)
-	sed -i '' -e 's/${version}/'"$(version)"'/' linux/Readme
+	sed -e 's/{{version}}/'"$(version)"'/g' skel/readmes/Readme > linux/Readme
 	cd linux && tar cvf $(name)Linux.tar.gz * && cp $(name)Linux.tar.gz ../pkg
 
 mac-pkg: mac-build
 	mkdir mac 
 	cp skel/licenses/* mac
-	cp skel/readmes/Readme mac
 	cp bin/$(name)Mac mac/$(name)
-	sed -i '' -e 's/${version}/'"$(version)"'/' mac/Readme
+	sed -e 's/{{version}}/'"$(version)"'/g' skel/readmes/Readme > mac/Readme
 	cd mac && tar cvf $(name)Mac.tar.gz * && cp $(name)Mac.tar.gz ../pkg
 
 pkg: win-pkg linux-pkg mac-pkg

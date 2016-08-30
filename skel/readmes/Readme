@@ -1,4 +1,4 @@
-AapeliBlox v${version}
+AapeliBlox v{{version}}
 =================
 
 Copyright (c) 2014-2016 Aapeli Vuorinen.
