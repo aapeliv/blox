@@ -32,8 +32,8 @@ namespace AapeliBlox {
 
     EmptyLine = MenuEntry("", false);
 
-    About0 = MenuEntry("Copyright (c) 2014 Aapeli Vuorinen", false);
-    About1 = MenuEntry("Free download at aape.li/blox", false);
+    About0 = MenuEntry("Copyright (c) 2014-2016 Aapeli Vuorinen", false);
+    About1 = MenuEntry("Free download, including source code at www.aapelivuorinen.com", false);
     About2 = MenuEntry("This game uses the following great libraries and fonts:", false);
     About3 = MenuEntry("SFML, Copyright (c) Laurent Gomila; Inconsolata, Copyright (c) 2011 Raph Levien (OFL 1.1);", false);
     About4 = MenuEntry("Bangers, Copyright (c) 2010 Vernon Adams (OFL 1.1); and Chewy (Apache License 2.0)", false);

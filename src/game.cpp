@@ -103,7 +103,7 @@ namespace AapeliBlox {
     // Block
     shapes.push_back(Shape(sf::Color(colorIntensity, colorIntensity, 0), 0, 0, 0, -1, -1, 0, -1, -1, true, false, -1, 0));
 
-    // Creat the moves
+    // Create the moves
     left = Move(-1, 0, 0, false);
     right = Move(1, 0, 0, false);
     down = Move(0, -1, 0, false);

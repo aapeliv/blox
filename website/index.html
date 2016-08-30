@@ -5,23 +5,27 @@
 		body {
 			width: 100%;
 			height: 100%;
+			margin: 0px;
 			background-color: #555555;
+			font-family: 'Lato', sans-serif;
 		}
-		#top_left {
+		#top-left {
 			position: absolute;
 			left: 2%;
 			top: 2%;
 			text-shadow: 0px 0px 1px #222222;
+			font-family: 'Lato', sans-serif;
 		}
 		#content {
 			position: absolute;
-			left: 5%;
-			bottom: 10%;
+			left: 2%;
+			bottom: 15%;
 		}
 		#screenshot {
 			position: absolute;
-			right: 5%;
-			top: 10%;
+			right: 2%;
+			top: 2%;
+			box-shadow: 0px 0px 30px -10px rgba(0,0,0,0.75);
 		}
 		.main {
 			font-family: 'Chewy', cursive;
@@ -36,9 +40,25 @@
 		.text {
 			font-family: 'Lato', sans-serif;
 			font-weight: 400;
-			font-size: 25px;
+			font-size: 22px;
 			color: #c8c8c8;
 			text-shadow: 0px 0px 2px #222222;
+		}
+		.text > a:link, .text > a:visited {
+			color: #c8c8c8;
+			text-shadow: 0px 0px 2px #222222;
+			text-decoration: underline;
+			transition: all 0.2s ease 0s;
+			-moz-transition: all 0.2s ease 0s;
+			-webkit-transition: all 0.2s ease 0s;
+		}
+		.text > a:hover, .text > a:active {
+			color: #ffffff;
+			text-shadow: 0px 0px 2px #666666;
+			text-decoration: underline;
+			transition: all 0.2s ease 0s;
+			-moz-transition: all 0.2s ease 0s;
+			-webkit-transition: all 0.2s ease 0s;
 		}
 		.small {
 			font-size: 12px;
@@ -69,12 +89,18 @@
 		<link href='http://fonts.googleapis.com/css?family=Lato|Chewy' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-		<div id="top_left"><span class="text small">Copyright (c) 2014 Aapeli Vuorinen.</span></div>
+		<div id="top-left"><span class="text small">&copy; 2014-2016 Aapeli Vuorinen.</span></div>
 		<div id="screenshot"><img src="screenshot.png"></img></div>
 		<div id="content">
 			<span class="main w">Aapeli</span><span class="main b">B</span><span class="main r">l</span><span class="main g">o</span><span class="main m">x</span><br />
-			<span class="text">A small game where you form rows out of dropping blocks.<br />Source code available on <a href="http://git.aapelivuorinen.com/aapeli/blox">git</a>. Licensed under the MIT license.</span><br /><br /><br />
-			<a class="dl-button linux" href="AapeliBlox.tar.gz">Download for Linux</a><a class="dl-button windows" href="AapeliBlox.zip">Download for Windows</a>
+			<span class="text">A small game where you form rows out of dropping blocks.<br />
+				Licensed under the open source MIT license.<br />
+				&copy; 2014-2016  <a href="https://www.aapelivuorinen.com/">Aapeli Vuorinen</a>. Source code available on <a href="https://git.aapelivuorinen.com/aapeli/blox">git</a>.
+			</span>
+				<br /><br /><br />
+			<a class="dl-button linux" href="AapeliBloxLinux.tar.gz">Download for Linux</a>
+			<a class="dl-button mac" href="AapeliBloxMac.tar.gz">Download for Mac OS X</a>
+			<a class="dl-button windows" href="AapeliBloxWindows.zip">Download for Windows</a>
 		</div>
 	</body>
 </html>
