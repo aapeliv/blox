@@ -318,7 +318,7 @@ namespace AapeliBlox {
     return canBlockGo (shape, location);
   }
   void Game::move (Move& doMove) {
-    if (moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > minMoveInterval) {
+    if ((doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > 3 * minMoveInterval) || (!doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > minMoveInterval)) {
       doMove.lastMove = moveTimer.getElapsedTime().asSeconds();
       if (doMove.x != 0 || doMove.y != 0) {
         if (canBlockGo(currentShape, Vector(currentLocation.x + doMove.x, currentLocation.y + doMove.y))) {
