@@ -123,7 +123,7 @@ namespace AapeliBlox {
               + featuresNextBlockDimensions.y + featurePadding);
     nextBlockHeight = 50;
     undoHeight = 12;
-    gameTicks = 5 * 1 * ticksPerSecond; // 5 minutes
+    gameTicks = 5 * 60 * ticksPerSecond; // 5 minutes
 
     // Fonts/text
     scoreText.setFont(dFont);
