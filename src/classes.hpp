@@ -4,14 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 namespace AapeliBlox {
-  // Small helper class for moves
-  struct Move {
-    int x, y, rotation;
-    bool jump;
-    double lastMove;
-    Move(int sx = 0, int sy = 0, int srotation = 0, bool sjump = false);
-    void restart(void);
-  };
   const int blockSide = 30;
   struct Vector {
     int x, y;

@@ -6,6 +6,8 @@
 #include <iomanip>
 #include <cmath>
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 
 #include "classes.hpp"
@@ -29,9 +31,10 @@ namespace AapeliBlox {
               int sfeaturewidth,
               int sfeaturepadding,
               bool sdrawGhost,
-              double sdropInterval,
+              int sdropInterval,
               int blockColor,
-              double sminMoveInterval,
+              int sminMoveTicks,
+              int sticksPerSecond,
               sf::Color sempty,
               sf::Color sundo) : gameState(sgameState),
                                  RNG(sRNG),
@@ -103,15 +106,8 @@ namespace AapeliBlox {
     // Block
     shapes.push_back(Shape(sf::Color(colorIntensity, colorIntensity, 0), 0, 0, 0, -1, -1, 0, -1, -1, true, false, -1, 0));
 
-    // Create the moves
-    left = Move(-1, 0, 0, false);
-    right = Move(1, 0, 0, false);
-    down = Move(0, -1, 0, false);
-    jump = Move(0, 0, 0, true);
-    rotateLeft = Move(0, 0, 3, false);
-    rotateRight = Move(0, 0, 1, false);
-
-    minMoveInterval = sminMoveInterval;
+    minMoveTicks = sminMoveTicks;
+    ticksPerSecond = sticksPerSecond;
 
     featureWidth = sfeaturewidth;
     featurePadding = sfeaturepadding;
@@ -127,9 +123,7 @@ namespace AapeliBlox {
               + featuresNextBlockDimensions.y + featurePadding);
     nextBlockHeight = 50;
     undoHeight = 12;
-    gameTimeMins = 5;
-    secsInMin = 60;
-    gameTime = secsInMin * gameTimeMins; // 4 minutes
+    gameTicks = 5 * 1 * ticksPerSecond; // 5 minutes
 
     // Fonts/text
     scoreText.setFont(dFont);
@@ -181,16 +175,18 @@ namespace AapeliBlox {
     drawTimer();
   }
   void Game::newGame(gameType newGameType) {
+    lastMoveTicks[left] = 0;
+    lastMoveTicks[right] = 0;
+    lastMoveTicks[down] = 0;
+    lastMoveTicks[rotateLeft] = 0;
+    lastMoveTicks[rotateRight] = 0;
+    lastMoveTicks[jump] = 0;
+    lastDropTicks = 0;
+    ticks = 0;
+
     curGameType = newGameType;
 
     gameState = inGame;
-
-    left.restart();
-    right.restart();
-    down.restart();
-    jump.restart();
-    rotateLeft.restart();
-    rotateRight.restart();
 
     // Set points:
     totalPoints = 0;
@@ -218,9 +214,7 @@ namespace AapeliBlox {
     effectsPoints = 0;
     effectInterval = 0.05;
 
-    moveTimer.restart();
-    gameTimer.restart();
-    drop.restart();
+    tickTimer.restart();
     effects.restart();
 
     spawnNewBlock();
@@ -270,26 +264,22 @@ namespace AapeliBlox {
   }
   void Game::drawTimer(void) {
     if (gameState == inGame) {
-      int secondsPlayed = std::floor(gameTimer.getElapsedTime().asSeconds());
-      int minutesPlayed = std::floor(secondsPlayed / secsInMin);
-      int seconds = std::floor(secondsPlayed % secsInMin);
-      int displayMins = minutesPlayed;
-      int displaySecs = seconds;
-      if (curGameType != normal) {
-        displayMins = gameTimeMins - minutesPlayed - 1;
-        displaySecs = secsInMin - seconds - 1;
-      }
+      int ticksToShow = (curGameType == normal) ? ticks : gameTicks - ticks;
+      int totalSecondsToShow = std::floor(ticksToShow / ticksPerSecond);
+      int minutesToShow = std::floor(totalSecondsToShow / 60);
+      int secondsToShow = std::floor(totalSecondsToShow % 60);
+
       std::stringstream timerTextMins;
-      timerTextMins << std::setw(2) << std::setfill('0') << displayMins;
+      timerTextMins << std::setw(2) << std::setfill('0') << minutesToShow;
       std::stringstream timerTextSecs;
-      timerTextSecs << std::setw(2) << std::setfill('0') << displaySecs;
+      timerTextSecs << std::setw(2) << std::setfill('0') << secondsToShow;
 
       gameTimePretty = timerTextMins.str().append(":").append(timerTextSecs.str());
 
       timerTextNumbers.setString(gameTimePretty);
       centerText(timerTextNumbers, featuresTimer.x + featureWidth / 2, featuresTimer.y + 40);
 
-      if (curGameType != normal && gameTimer.getElapsedTime().asSeconds() > gameTime - 0.1) {
+      if (curGameType != normal && ticks > gameTicks) {
         if (curGameType == undoGame) {
           endGameLogic(undoTimeOver);
         } else if (curGameType == timeTrial) {
@@ -317,21 +307,35 @@ namespace AapeliBlox {
     shape.rotate(rotation);
     return canBlockGo(shape, location);
   }
-  void Game::move(Move& doMove) {
-    if ((doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > 3 * minMoveInterval) || (!doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > minMoveInterval)) {
-      doMove.lastMove = moveTimer.getElapsedTime().asSeconds();
-      if (doMove.x != 0 || doMove.y != 0) {
-        if (canBlockGo(currentShape, Vector(currentLocation.x + doMove.x, currentLocation.y + doMove.y))) {
-          currentLocation.x += doMove.x;
-          currentLocation.y += doMove.y;
+  void Game::move(moves move) {
+    if (ticks - lastMoveTicks[move] >= ((move == jump) ? 3 : 1) * minMoveTicks) {
+      lastMoveTicks[move] = ticks;
+      if (move == right || move == left || move == down) {
+        int mx = 0, my = 0;
+        switch (move) {
+          case right:
+            mx = 1;
+            break;
+          case left:
+            mx = -1;
+            break;
+          case down:
+            my = -1;
+            break;
+        }
+         if (canBlockGo(currentShape, Vector(currentLocation.x + mx, currentLocation.y + my))) {
+          currentLocation.x += mx;
+          currentLocation.y += my;
         }
       }
-      if (doMove.rotation != 0) {
-        if (canBlockRotate(currentShape, Vector(currentLocation.x, currentLocation.y), doMove.rotation)) {
-          currentShape.rotate(doMove.rotation); currentShapeGhost.rotate(doMove.rotation);
+      if (move == rotateLeft || move == rotateRight) {
+        int rotation = (move == rotateLeft) ? -1 : 1;
+        if (canBlockRotate(currentShape, Vector(currentLocation.x, currentLocation.y), rotation)) {
+          currentShape.rotate(rotation); 
+          currentShapeGhost.rotate(rotation);
         }
       }
-      if (doMove.jump) {
+      if (move == jump) {
         placeGhost();
         currentLocation = currentLocationGhost;
         placeBlock();
@@ -513,7 +517,7 @@ namespace AapeliBlox {
     }
     switch (type) {
       case undoNoBlocks:
-        totalPoints += (gameTime - gameTimer.restart().asSeconds()) * 25;
+        totalPoints += (gameTicks - ticks) / ticksPerSecond * 25;
         endEntry.setText(std::string("You won!"));
         break;
       case undoTimeOver:
@@ -531,8 +535,13 @@ namespace AapeliBlox {
   }
   void Game::gameLogic(void) {
     if (gameState == inGame) {
-      if (drop.getElapsedTime().asSeconds() > dropInterval) {
-        drop.restart();
+      if (tickTimer.getElapsedTime().asSeconds() * ticksPerSecond > 1) {
+        ticks++;
+        tickTimer.restart();
+      }
+
+      if (ticks - lastDropTicks == dropInterval) {
+        lastDropTicks = ticks;
         // Blocks drop
         if (!canBlockGo(currentShape, Vector(currentLocation.x, currentLocation.y - 1))) {
           placeBlock();

@@ -3,12 +3,6 @@
 #include "classes.hpp"
 
 namespace AapeliBlox {
-  Move::Move(int sx, int sy, int srotation, bool sjump) {
-    x = sx; y = sy; rotation = srotation; jump = sjump; lastMove = 0;
-  }
-  void Move::restart(void) {
-    lastMove = 0;
-  }
   Vector::Vector(int sx, int sy) {
     x = sx; y = sy;
   }

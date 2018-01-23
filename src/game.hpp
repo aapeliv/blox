@@ -15,6 +15,14 @@ namespace AapeliBlox {
     timeTrial,
     normal
   };
+  enum moves {
+    left,
+    right,
+    down,
+    rotateLeft,
+    rotateRight,
+    jump
+  };
   class Game {
     enum endType {
       undoNoBlocks,
@@ -24,9 +32,11 @@ namespace AapeliBlox {
     };
     states& gameState;
 
+    std::map<moves, int> lastMoveTicks;
+
     // Global game settings
     int blockTowerWidth, blockTowerHeight, blockTowerVisibleHeight, blockSide, totalPoints, featureWidth;
-    int nextBlockHeight, textPaddingx, textPaddingy, featurePadding, undoHeight, gameTime, gameTimeMins, secsInMin;
+    int nextBlockHeight, textPaddingx, textPaddingy, featurePadding, undoHeight, gameTicks;
     Vector min, max, features, featuresNextBlock, featuresYourScore, featuresTimer;
     Vector featuresNextBlockDimensions, featuresYourScoreDimensions, featuresTimerDimensions;
     bool drawGhost;
@@ -37,10 +47,11 @@ namespace AapeliBlox {
     Block emptyBlock, undoBlock;
 
     // Time between each drop
-    double dropInterval, effectInterval;
+    double effectInterval;
 
+    int dropInterval;
     // Timers
-    sf::Clock drop, effects, gameTimer;
+    sf::Clock effects, tickTimer;
 
     std::string gameTimePretty;
 
@@ -73,9 +84,8 @@ namespace AapeliBlox {
     sf::VertexArray featureOutline, featureBoxes;
     sf::Color featureOutlineColor, featureBoxColor;
 
-    Move left, right, down, jump, rotateLeft, rotateRight;
-    sf::Clock moveTimer;
-    double minMoveInterval;
+    int minMoveTicks, ticksPerSecond, ticks;
+    int lastDropTicks;
 
     // Point calcuation
     std::vector<int> points;
@@ -109,7 +119,7 @@ namespace AapeliBlox {
     bool canBlockRotate(Shape shape, Vector location, int rotation);
     void dissolveCurrentBlock(void);
     void placeBlock(void);
-    void move(Move& doMove);
+    void move(moves move);
     void centerText(sf::Text& text, int x, int y);
     void doEffects(void);
     void createUndoMap(void);
@@ -131,9 +141,10 @@ namespace AapeliBlox {
           int sfeaturewidth = 200,
           int sfeaturepadding = 20,
           bool sdrawGhost = true,
-          double sdropInterval = 0.5,
+          int sdropInterval = 15,
           int blockColor = 254,
-          double sminMoveInterval = 0.1,
+          int sminMoveTicks = 3,
+          int sticksPerSecond = 30,
           sf::Color empty = sf::Color(255, 0, 255, 150),
           sf::Color undo = sf::Color(23, 47, 66, 255));
     void newGame(gameType newGameType);

@@ -49,7 +49,7 @@ int main(void)
   MenuHandler menus(gameState, menuFont, width, height);
 
   Game myGame(gameState, myRNG, menuFont, scoreFont, menus.getEndScoreEntry(), menus.getEndTextEntry(), menus.getEndTimeEntry(), 10, 22, 30, 20, 20,
-              200, 20, true, 0.5, 200, 0.1, sf::Color(255, 0, 255, 150),
+              200, 20, true, 15, 200, 3, 30, sf::Color(255, 0, 255, 150),
               sf::Color(23, 47, 66, 255));
 
   gameState = inMainMenu;
