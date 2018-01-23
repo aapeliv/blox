@@ -47,7 +47,7 @@ namespace AapeliBlox {
       sf::Text sfText;
       sfText.setFont(sfont);
       sfText.setCharacterSize(scharSize);
-      sfText.setColor(textColor);
+      sfText.setFillColor(textColor);
       sfText.setString(menuEntries[i]->text);
       lineHeight = std::max(int(lineHeight), int(sfText.getLocalBounds().height));
       entries.push_back(MenuText(sfText, menuEntries[i]));
@@ -80,9 +80,9 @@ namespace AapeliBlox {
     int drawAt = centery - entries.size() * (lineHeight + padding) / 2 + 4 * padding;
     for (int i = 0; i < entries.size(); i++) {
       entries[i].sfText.setString(entries[i].entry->text);
-      entries[i].sfText.setColor(textColor);
+      entries[i].sfText.setFillColor(textColor);
       if (selected == i) {
-        entries[i].sfText.setColor(textColorHover);
+        entries[i].sfText.setFillColor(textColorHover);
       }
       entries[i].sfText.setPosition(centerx - entries[i].sfText.getLocalBounds().width / 2, drawAt);
       window.draw(entries[i].sfText);

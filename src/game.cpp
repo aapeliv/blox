@@ -140,11 +140,11 @@ namespace AapeliBlox {
 
     textColor = sf::Color(255, 255, 255, 255);
 
-    scoreText.setColor(textColor);
-    scoreTextNumbers.setColor(textColor);
-    nextShapeText.setColor(textColor);
-    timerText.setColor(textColor);
-    timerTextNumbers.setColor(textColor);
+    scoreText.setFillColor(textColor);
+    scoreTextNumbers.setFillColor(textColor);
+    nextShapeText.setFillColor(textColor);
+    timerText.setFillColor(textColor);
+    timerTextNumbers.setFillColor(textColor);
 
     scoreText.setString("Score");
     nextShapeText.setString("Next Block");
@@ -311,19 +311,8 @@ namespace AapeliBlox {
     if (ticks - lastMoveTicks[move] >= ((move == jump) ? 3 : 1) * minMoveTicks) {
       lastMoveTicks[move] = ticks;
       if (move == right || move == left || move == down) {
-        int mx = 0, my = 0;
-        switch (move) {
-          case right:
-            mx = 1;
-            break;
-          case left:
-            mx = -1;
-            break;
-          case down:
-            my = -1;
-            break;
-        }
-         if (canBlockGo(currentShape, Vector(currentLocation.x + mx, currentLocation.y + my))) {
+        int mx = (move == right) - (move == left), my = - (move == down);
+        if (canBlockGo(currentShape, Vector(currentLocation.x + mx, currentLocation.y + my))) {
           currentLocation.x += mx;
           currentLocation.y += my;
         }
