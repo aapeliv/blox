@@ -6,7 +6,7 @@ name = AapeliBlox
 optimize =-O2
 hcon = -mwindows # Hide console
 version = `cat version`
-cflags = -lsfml-graphics -lsfml-window -lsfml-system -std=c++11
+cflags = -lsfml-graphics -lsfml-window -lsfml-system -std=c++11 -Wall
 
 all: win linux mac
 
