@@ -3,29 +3,29 @@
 #include "classes.hpp"
 
 namespace AapeliBlox {
-  Move::Move (int sx, int sy, int srotation, bool sjump) {
+  Move::Move(int sx, int sy, int srotation, bool sjump) {
     x = sx; y = sy; rotation = srotation; jump = sjump; lastMove = 0;
   }
-  void Move::restart (void) {
+  void Move::restart(void) {
     lastMove = 0;
   }
-  Vector::Vector (int sx, int sy) {
+  Vector::Vector(int sx, int sy) {
     x = sx; y = sy;
   }
-  Block::Block (sf::Color scolor, bool visible, bool sisUndoBlock) {
+  Block::Block(sf::Color scolor, bool visible, bool sisUndoBlock) {
     color = scolor; isBlock = visible; isUndoBlock = sisUndoBlock;
   }
-  ShapeBlock::ShapeBlock (sf::Color scolor, int sx, int sy) {
+  ShapeBlock::ShapeBlock(sf::Color scolor, int sx, int sy) {
     x = sx; y = sy; color = scolor;
   }
-  void Shape::updateExtrema (void) {
+  void Shape::updateExtrema(void) {
     minx = 0; maxx = 0;
     for (int i = 0; i < 4; i++) {
       minx = std::min(minx, blocks[i].x);
       maxx = std::max(maxx, blocks[i].x);
     }
   }
-  Shape::Shape (sf::Color scolor,
+  Shape::Shape(sf::Color scolor,
                 int x1, int y1,
                 int x2, int y2,
                 int x3, int y3,
@@ -46,7 +46,7 @@ namespace AapeliBlox {
     updateExtrema();
   }
   /** Rotate either 0, 90, 180, 270, etc degrees */
-  void Shape::rotate (int rotation) {
+  void Shape::rotate(int rotation) {
     while (rotation < 0) {
       rotation += 4;
     }

@@ -97,26 +97,26 @@ namespace AapeliBlox {
 
     MenuEntry &scoreEntry, &endEntry, &timeEntry;
 
-    void drawBlock (int x, int y, sf::Color& color);
-    void drawShape (Shape& sh, Vector& loc);
-    void drawNext (void);
-    void drawPoints (void);
-    void drawTimer (void);
-    void drawFeatureBox (int x, int y, int width, int height);
-    void placeGhost (void);
-    void checkRows (void);
-    bool canBlockGo (Shape shape, Vector location);
-    bool canBlockRotate (Shape shape, Vector location, int rotation);
-    void dissolveCurrentBlock (void);
-    void placeBlock (void);
-    void move (Move& doMove);
-    void centerText (sf::Text& text, int x, int y);
-    void doEffects (void);
-    void createUndoMap (void);
-    void calculatePoints (void);
-    void endGameLogic (endType type);
+    void drawBlock(int x, int y, sf::Color& color);
+    void drawShape(Shape& sh, Vector& loc);
+    void drawNext(void);
+    void drawPoints(void);
+    void drawTimer(void);
+    void drawFeatureBox(int x, int y, int width, int height);
+    void placeGhost(void);
+    void checkRows(void);
+    bool canBlockGo(Shape shape, Vector location);
+    bool canBlockRotate(Shape shape, Vector location, int rotation);
+    void dissolveCurrentBlock(void);
+    void placeBlock(void);
+    void move(Move& doMove);
+    void centerText(sf::Text& text, int x, int y);
+    void doEffects(void);
+    void createUndoMap(void);
+    void calculatePoints(void);
+    void endGameLogic(endType type);
   public:
-    Game (states& sgameState,
+    Game(states& sgameState,
           RandomNumberGenerator& sRNG,
           sf::Font& sdFont,
           sf::Font& ssFont,
@@ -136,18 +136,18 @@ namespace AapeliBlox {
           double sminMoveInterval = 0.1,
           sf::Color empty = sf::Color(255, 0, 255, 150),
           sf::Color undo = sf::Color(23, 47, 66, 255));
-    void newGame (gameType newGameType);
-    void spawnNewBlock (void);
-    void gameLogic (void);
-    void draw (sf::RenderWindow& window);
-    void inputLeft (void);
-    void inputRight (void);
-    void inputDown (void);
-    void inputRotateLeft (void);
-    void inputRotateRight (void);
-    void inputJump (void);
-    int getPoints (void);
-    void restart (void);
+    void newGame(gameType newGameType);
+    void spawnNewBlock(void);
+    void gameLogic(void);
+    void draw(sf::RenderWindow& window);
+    void inputLeft(void);
+    void inputRight(void);
+    void inputDown(void);
+    void inputRotateLeft(void);
+    void inputRotateRight(void);
+    void inputJump(void);
+    int getPoints(void);
+    void restart(void);
   };
 }
 

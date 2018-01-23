@@ -10,14 +10,14 @@ namespace AapeliBlox {
   struct MenuEntry {
     std::string text;
     bool clickable;
-    MenuEntry (std::string stext = "", bool sclickable = true);
-    void setText (std::string stext);
+    MenuEntry(std::string stext = "", bool sclickable = true);
+    void setText(std::string stext);
   };
   class MenuScreen {
     struct MenuText {
       sf::Text sfText;
       MenuEntry* entry;
-      MenuText (sf::Text ssfText, MenuEntry* sentry);
+      MenuText(sf::Text ssfText, MenuEntry* sentry);
     };
     int maxx, maxy, centerx, centery;
     int bgHeight, padding;
@@ -27,16 +27,16 @@ namespace AapeliBlox {
     std::vector<MenuText> entries;
     sf::VertexArray bgStrip;
   public:
-    MenuScreen (void);
-    MenuScreen (sf::Font& sfont,
+    MenuScreen(void);
+    MenuScreen(sf::Font& sfont,
                 std::vector<MenuEntry*> menuEntries,
                 int scharSize,
                 int smaxx,
                 int smaxy);
-    bool checkHover (int x, int y);
-    void draw (sf::RenderWindow& window);
-    void changeSelection (int dir);
-    MenuEntry* getSelected (void);
+    bool checkHover(int x, int y);
+    void draw(sf::RenderWindow& window);
+    void changeSelection(int dir);
+    MenuEntry* getSelected(void);
   };
 }
 

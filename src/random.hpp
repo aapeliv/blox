@@ -12,13 +12,13 @@ namespace AapeliBlox {
     std::uniform_int_distribution<int> rRotation;
     int currentSeed;
   public:
-    RandomNumberGenerator (int seed, int blockTowerWidth = 1);
-    void reSeed (int seed);
-    bool createBlock (void);
-    int blockDestroy (void);
-    int block (void);
-    int rotation (void);
-    int getSeed (void);
+    RandomNumberGenerator(int seed, int blockTowerWidth = 1);
+    void reSeed(int seed);
+    bool createBlock(void);
+    int blockDestroy(void);
+    int block(void);
+    int rotation(void);
+    int getSeed(void);
   };
 }
 

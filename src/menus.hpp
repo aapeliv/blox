@@ -43,19 +43,19 @@ namespace AapeliBlox {
       EndGameTime, EndGameScore;
     MenuEntry About0, About1, About2, About3, About4, EmptyLine, Back;
   public:
-    MenuHandler (states& sgameState, sf::Font& menuFont, int width, int height);
-    MenuScreen* currentMenu (void);
-    void mouseMoved (int x, int y);
-    void mouseClicked (int x, int y);
-    void inputUp (void);
-    void inputDown (void);
-    void inputEnter (void);
-    void inputEsc (void);
-    selectionOutcome processSelection (void);
-    void draw (sf::RenderWindow& window);
-    MenuEntry& getEndTextEntry (void);
-    MenuEntry& getEndScoreEntry (void);
-    MenuEntry& getEndTimeEntry (void);
+    MenuHandler(states& sgameState, sf::Font& menuFont, int width, int height);
+    MenuScreen* currentMenu(void);
+    void mouseMoved(int x, int y);
+    void mouseClicked(int x, int y);
+    void inputUp(void);
+    void inputDown(void);
+    void inputEnter(void);
+    void inputEsc(void);
+    selectionOutcome processSelection(void);
+    void draw(sf::RenderWindow& window);
+    MenuEntry& getEndTextEntry(void);
+    MenuEntry& getEndScoreEntry(void);
+    MenuEntry& getEndTimeEntry(void);
   };
 }
 

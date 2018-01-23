@@ -9,7 +9,7 @@
 #include "resources/bloxLogo.hpp"
 
 namespace AapeliBlox {
-  MenuHandler::MenuHandler (states& sgameState, sf::Font& menuFont, int width, int height) : gameState(sgameState) {
+  MenuHandler::MenuHandler(states& sgameState, sf::Font& menuFont, int width, int height) : gameState(sgameState) {
     selected = 0;
 
     // Let's make some menus!
@@ -95,7 +95,7 @@ namespace AapeliBlox {
     logoSprite.setTexture(logoTexture);
     logoSprite.setPosition(width / 2 - bloxLogo.width / 2, width / 2 - 100);
   }
-  MenuScreen* MenuHandler::currentMenu (void) {
+  MenuScreen* MenuHandler::currentMenu(void) {
     switch (gameState) {
       case inMainMenu:
         return &mainMenu;
@@ -111,23 +111,23 @@ namespace AapeliBlox {
         return 0;
     }
   }
-  void MenuHandler::mouseMoved (int x, int y) {
+  void MenuHandler::mouseMoved(int x, int y) {
     currentMenu()->checkHover(x, y);
   }
-  void MenuHandler::mouseClicked (int x, int y) {
+  void MenuHandler::mouseClicked(int x, int y) {
     currentMenu()->checkHover(x, y);
     selected = currentMenu()->getSelected();
   }
-  void MenuHandler::inputUp (void) {
+  void MenuHandler::inputUp(void) {
     currentMenu()->changeSelection(-1);
   }
-  void MenuHandler::inputDown (void) {
+  void MenuHandler::inputDown(void) {
     currentMenu()->changeSelection(1);
   }
-  void MenuHandler::inputEnter (void) {
+  void MenuHandler::inputEnter(void) {
     selected = currentMenu()->getSelected();
   }
-  void MenuHandler::inputEsc (void) {
+  void MenuHandler::inputEsc(void) {
     switch (gameState) {
       case inContinueMenu:
         selected = &Continue; break;
@@ -137,7 +137,7 @@ namespace AapeliBlox {
         selected = &Back; break;
     }
   }
-  selectionOutcome MenuHandler::processSelection (void) {
+  selectionOutcome MenuHandler::processSelection(void) {
     MenuEntry* temp = selected;
     selected = 0;
     if (temp == &Singleplayer) { return goToNewGameMenu; }
@@ -153,19 +153,19 @@ namespace AapeliBlox {
     else if (temp == &Back) { return goToMainMenu; }
     else { return doNothing; }
   }
-  void MenuHandler::draw (sf::RenderWindow& window) {
+  void MenuHandler::draw(sf::RenderWindow& window) {
     if (gameState != inGame) {
       currentMenu()->draw(window);
       window.draw(logoSprite);
     }
   }
-  MenuEntry& MenuHandler::getEndTextEntry (void) {
+  MenuEntry& MenuHandler::getEndTextEntry(void) {
     return EndGameText;
   }
-  MenuEntry& MenuHandler::getEndScoreEntry (void) {
+  MenuEntry& MenuHandler::getEndScoreEntry(void) {
     return EndGameScore;
   }
-  MenuEntry& MenuHandler::getEndTimeEntry (void) {
+  MenuEntry& MenuHandler::getEndTimeEntry(void) {
     return EndGameTime;
   }
 }

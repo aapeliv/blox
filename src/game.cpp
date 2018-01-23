@@ -14,7 +14,7 @@
 #include "game.hpp"
 
 namespace AapeliBlox {
-  Game::Game (states& sgameState,
+  Game::Game(states& sgameState,
               RandomNumberGenerator& sRNG,
               sf::Font& sdFont,
               sf::Font& ssFont,
@@ -175,12 +175,12 @@ namespace AapeliBlox {
     // Timer
     drawFeatureBox(featuresTimer.x, featuresTimer.y, featuresTimerDimensions.x, featuresTimerDimensions.y);
 
-    newGame (normal);
+    newGame(normal);
 
     drawPoints();
     drawTimer();
   }
-  void Game::newGame (gameType newGameType) {
+  void Game::newGame(gameType newGameType) {
     curGameType = newGameType;
 
     gameState = inGame;
@@ -225,21 +225,21 @@ namespace AapeliBlox {
 
     spawnNewBlock();
   }
-  void Game::restart (void) {
+  void Game::restart(void) {
     newGame(curGameType);
   }
-  void Game::doEffects (void) {
+  void Game::doEffects(void) {
     if (effects.getElapsedTime().asSeconds() > effectInterval) {
       effects.restart();
       if (effectsPoints < totalPoints) {
-        effectsPoints += int ((totalPoints - effectsPoints + 1) / 2);
+        effectsPoints += int((totalPoints - effectsPoints + 1) / 2);
       }
     }
   }
-  void Game::centerText (sf::Text& text, int x, int y) {
+  void Game::centerText(sf::Text& text, int x, int y) {
     text.setPosition(x - text.getLocalBounds().width / 2, y);
   }
-  void Game::drawFeatureBox (int x, int y, int width, int height) {
+  void Game::drawFeatureBox(int x, int y, int width, int height) {
     featureOutline.append(sf::Vertex(sf::Vector2f(x, y), featureOutlineColor));
     featureOutline.append(sf::Vertex(sf::Vector2f(x + width, y), featureOutlineColor));
     featureOutline.append(sf::Vertex(sf::Vector2f(x + width, y + height), featureOutlineColor));
@@ -254,21 +254,21 @@ namespace AapeliBlox {
     featureBoxes.append(sf::Vertex(sf::Vector2f(x + width, y + height), featureBoxColor));
     featureBoxes.append(sf::Vertex(sf::Vector2f(x, y + height), featureBoxColor));
   }
-  void Game::calculatePoints (void) {
+  void Game::calculatePoints(void) {
     totalPoints = points[0] * weights[0] +
                   points[1] * weights[1] +
                   points[2] * weights[2] +
                   points[3] * weights[3] +
                   points[4] * weights[4];
   }
-  void Game::drawPoints (void) {
+  void Game::drawPoints(void) {
     calculatePoints();
     std::stringstream pointText;
     pointText << std::setw(7) << std::setfill('0') << effectsPoints;
     scoreTextNumbers.setString(pointText.str());
-    centerText (scoreTextNumbers, featuresYourScore.x + featureWidth / 2, featuresYourScore.y + 40);
+    centerText(scoreTextNumbers, featuresYourScore.x + featureWidth / 2, featuresYourScore.y + 40);
   }
-  void Game::drawTimer (void) {
+  void Game::drawTimer(void) {
     if (gameState == inGame) {
       int secondsPlayed = std::floor(gameTimer.getElapsedTime().asSeconds());
       int minutesPlayed = std::floor(secondsPlayed / secsInMin);
@@ -287,7 +287,7 @@ namespace AapeliBlox {
       gameTimePretty = timerTextMins.str().append(":").append(timerTextSecs.str());
 
       timerTextNumbers.setString(gameTimePretty);
-      centerText (timerTextNumbers, featuresTimer.x + featureWidth / 2, featuresTimer.y + 40);
+      centerText(timerTextNumbers, featuresTimer.x + featureWidth / 2, featuresTimer.y + 40);
 
       if (curGameType != normal && gameTimer.getElapsedTime().asSeconds() > gameTime - 0.1) {
         if (curGameType == undoGame) {
@@ -300,7 +300,7 @@ namespace AapeliBlox {
   }
   // Checks whether the block can go to a certain position
   // a.k.a. whether there are any blocks at those places
-  bool Game::canBlockGo (Shape shape, Vector location) {
+  bool Game::canBlockGo(Shape shape, Vector location) {
     bool cannotGo = false;
     for (int i = 0; i < 4; i++) {
       if (location.x + shape.blocks[i].x < 0 ||
@@ -313,11 +313,11 @@ namespace AapeliBlox {
     return !cannotGo;
   }
   // Helper function that does the same to a rotated block
-  bool Game::canBlockRotate (Shape shape, Vector location, int rotation) {
+  bool Game::canBlockRotate(Shape shape, Vector location, int rotation) {
     shape.rotate(rotation);
-    return canBlockGo (shape, location);
+    return canBlockGo(shape, location);
   }
-  void Game::move (Move& doMove) {
+  void Game::move(Move& doMove) {
     if ((doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > 3 * minMoveInterval) || (!doMove.jump && moveTimer.getElapsedTime().asSeconds() - doMove.lastMove > minMoveInterval)) {
       doMove.lastMove = moveTimer.getElapsedTime().asSeconds();
       if (doMove.x != 0 || doMove.y != 0) {
@@ -338,13 +338,13 @@ namespace AapeliBlox {
       }
     }
   }
-  void Game::inputLeft (void) { move(left); }
-  void Game::inputRight (void) { move(right); }
-  void Game::inputDown (void) { move(down); }
-  void Game::inputRotateLeft (void) { move(rotateLeft); }
-  void Game::inputRotateRight (void) { move(rotateRight); }
-  void Game::inputJump (void) { move(jump); }
-  void Game::createUndoMap (void) {
+  void Game::inputLeft(void) { move(left); }
+  void Game::inputRight(void) { move(right); }
+  void Game::inputDown(void) { move(down); }
+  void Game::inputRotateLeft(void) { move(rotateLeft); }
+  void Game::inputRotateRight(void) { move(rotateRight); }
+  void Game::inputJump(void) { move(jump); }
+  void Game::createUndoMap(void) {
     // Create some random blocks
     for (int level = 0; level < undoHeight; level++) {
       int blocksInRow = 0;
@@ -359,7 +359,7 @@ namespace AapeliBlox {
       }
     }
   }
-  void Game::placeGhost (void) {
+  void Game::placeGhost(void) {
     int y = 0;
     bool done = false;
     // Check how far the block can move and move ghost there
@@ -378,7 +378,7 @@ namespace AapeliBlox {
       y++;
     }
   }
-  void Game::spawnNewBlock (void) {
+  void Game::spawnNewBlock(void) {
     if (!canBlockGo(nextShape, Vector(blockTowerWidth / 2, blockTowerVisibleHeight - 1))) {
       endGameLogic(tooManyBlocks);
     } else {
@@ -395,7 +395,7 @@ namespace AapeliBlox {
       placeGhost();
     }
   }
-  void Game::drawBlock (int x, int y, sf::Color& color) {
+  void Game::drawBlock(int x, int y, sf::Color& color) {
     if (y < blockTowerVisibleHeight) {
       blockVertexArray.append(sf::Vertex(sf::Vector2f(min.x + x * blockSide, max.y - y * blockSide), color));
       blockVertexArray.append(sf::Vertex(sf::Vector2f(min.x + (x + 1) * blockSide, max.y - y * blockSide), color));
@@ -403,12 +403,12 @@ namespace AapeliBlox {
       blockVertexArray.append(sf::Vertex(sf::Vector2f(min.x + x * blockSide, max.y - (y + 1) * blockSide), color));
     }
   }
-  void Game::drawShape (Shape& sh, Vector& loc) {
+  void Game::drawShape(Shape& sh, Vector& loc) {
     for (int i = 0; i < 4; i++) {
-      drawBlock (sh.blocks[i].x + loc.x, sh.blocks[i].y + loc.y, sh.color);
+      drawBlock(sh.blocks[i].x + loc.x, sh.blocks[i].y + loc.y, sh.color);
     }
   }
-  void Game::drawNext (void) {
+  void Game::drawNext(void) {
     nextVertexArray.clear();
     nextGrid.clear();
 
@@ -443,7 +443,7 @@ namespace AapeliBlox {
       nextGrid.append(sf::Vertex(sf::Vector2f(center.x + (nextShape.blocks[i].x - 0.5 + addx) * blockSide, center.y - (nextShape.blocks[i].y + addy) * blockSide), gridLineColor));
     }
   }
-  void Game::checkRows (void) {
+  void Game::checkRows(void) {
     int rows = 0;
     // Recursively loop until got rid of all rows
     int y = 0;
@@ -476,13 +476,13 @@ namespace AapeliBlox {
     }
     points[rows]++;
   }
-  void Game::dissolveCurrentBlock (void) {
+  void Game::dissolveCurrentBlock(void) {
     // Dissolve the block into the field
     for (int i = 0; i < 4; i++) {
       blocks[currentLocation.x + currentShape.blocks[i].x][currentLocation.y + currentShape.blocks[i].y] = Block(currentShape.color, true);
     }
   }
-  void Game::placeBlock (void) {
+  void Game::placeBlock(void) {
     dissolveCurrentBlock();
     checkRows();
     spawnNewBlock();
@@ -500,7 +500,7 @@ namespace AapeliBlox {
       }
     }
   }
-  void Game::endGameLogic (endType type) {
+  void Game::endGameLogic(endType type) {
     calculatePoints();
     switch (curGameType) {
       case normal:
@@ -529,7 +529,7 @@ namespace AapeliBlox {
     scoreEntry.setText(std::string("Score: ").append(std::to_string(totalPoints)));
     gameState = inEndBox;
   }
-  void Game::gameLogic (void) {
+  void Game::gameLogic(void) {
     if (gameState == inGame) {
       if (drop.getElapsedTime().asSeconds() > dropInterval) {
         drop.restart();
@@ -552,17 +552,17 @@ namespace AapeliBlox {
     for (int x = 0; x < blockTowerWidth; x++) {
       for (int y = 0; y < blockTowerHeight; y++) {
         if (blocks[x][y].isBlock) {
-          drawBlock (x, y, blocks[x][y].color);
+          drawBlock(x, y, blocks[x][y].color);
         }
       }
     }
 
     // Draw the current block
-    drawShape (currentShape, currentLocation);
+    drawShape(currentShape, currentLocation);
 
     // Draw ghost block
     if (drawGhost) {
-      drawShape (currentShapeGhost, currentLocationGhost);
+      drawShape(currentShapeGhost, currentLocationGhost);
     }
 
     drawNext();
@@ -571,7 +571,7 @@ namespace AapeliBlox {
 
     drawTimer();
   }
-  void Game::draw (sf::RenderWindow& window) {
+  void Game::draw(sf::RenderWindow& window) {
     window.draw(featureBoxes);
     window.draw(featureOutline);
 
@@ -590,7 +590,7 @@ namespace AapeliBlox {
     window.draw(timerText);
     window.draw(timerTextNumbers);
   }
-  int Game::getPoints (void) {
+  int Game::getPoints(void) {
     return totalPoints;
   }
 }

@@ -7,19 +7,19 @@
 #include "menu.hpp"
 
 namespace AapeliBlox {
-  MenuEntry::MenuEntry (std::string stext, bool sclickable) {
+  MenuEntry::MenuEntry(std::string stext, bool sclickable) {
     text = stext; clickable = sclickable;
   }
-  void MenuEntry::setText (std::string stext) {
+  void MenuEntry::setText(std::string stext) {
     text = stext;
   }
-  MenuScreen::MenuText::MenuText (sf::Text ssfText, MenuEntry* sentry) {
+  MenuScreen::MenuText::MenuText(sf::Text ssfText, MenuEntry* sentry) {
     sfText = ssfText; entry = sentry;
   }
-  MenuScreen::MenuScreen (void) {
+  MenuScreen::MenuScreen(void) {
     // Do nothing
   }
-  MenuScreen::MenuScreen (sf::Font& sfont,
+  MenuScreen::MenuScreen(sf::Font& sfont,
                           std::vector<MenuEntry*> menuEntries,
                           int scharSize,
                           int smaxx,
@@ -49,7 +49,7 @@ namespace AapeliBlox {
       sfText.setCharacterSize(scharSize);
       sfText.setColor(textColor);
       sfText.setString(menuEntries[i]->text);
-      lineHeight = std::max(int (lineHeight), int (sfText.getLocalBounds().height));
+      lineHeight = std::max(int(lineHeight), int(sfText.getLocalBounds().height));
       entries.push_back(MenuText(sfText, menuEntries[i]));
     }
 
@@ -59,7 +59,7 @@ namespace AapeliBlox {
       }
     }
   }
-  bool MenuScreen::checkHover (int x, int y) {
+  bool MenuScreen::checkHover(int x, int y) {
     for (int i = 0; i < entries.size(); i++) {
       if (entries[i].sfText.getGlobalBounds().contains(x, y) && entries[i].entry->clickable) {
         selected = i;
@@ -68,12 +68,12 @@ namespace AapeliBlox {
     }
     return false;
   }
-  void MenuScreen::changeSelection (int dir) {
+  void MenuScreen::changeSelection(int dir) {
     if (selected + dir >= 0 && selected + dir < entries.size() && entries[selected + dir].entry->clickable) {
       selected += dir;
     }
   }
-  void MenuScreen::draw (sf::RenderWindow& window) {
+  void MenuScreen::draw(sf::RenderWindow& window) {
     // Draw background
     window.draw(bgStrip);
 
@@ -89,7 +89,7 @@ namespace AapeliBlox {
       drawAt += (lineHeight + padding);
     }
   }
-  MenuEntry* MenuScreen::getSelected (void) {
+  MenuEntry* MenuScreen::getSelected(void) {
     return entries[selected].entry;
   }
 }

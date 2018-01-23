@@ -3,7 +3,7 @@
 #include "random.hpp"
 
 namespace AapeliBlox {
-  RandomNumberGenerator::RandomNumberGenerator (int seed, int blockTowerWidth) {
+  RandomNumberGenerator::RandomNumberGenerator(int seed, int blockTowerWidth) {
     currentSeed = seed;
 
     // Seed the Mersenne Twister with a real random number
@@ -22,23 +22,23 @@ namespace AapeliBlox {
     // Randomly rotate the next block
     rRotation = std::uniform_int_distribution<int>(0, 3);
   }
-  void RandomNumberGenerator::reSeed (int seed) {
+  void RandomNumberGenerator::reSeed(int seed) {
     currentSeed = seed;
     rMersenneTwister = std::mt19937(currentSeed);
   }
-  bool RandomNumberGenerator::createBlock (void) {
+  bool RandomNumberGenerator::createBlock(void) {
     return rCreateBlock(rMersenneTwister);
   }
-  int RandomNumberGenerator::blockDestroy (void) {
+  int RandomNumberGenerator::blockDestroy(void) {
     return rBlockDestroy(rMersenneTwister);
   }
-  int RandomNumberGenerator::block (void) {
+  int RandomNumberGenerator::block(void) {
     return rBlock(rMersenneTwister);
   }
-  int RandomNumberGenerator::rotation (void) {
+  int RandomNumberGenerator::rotation(void) {
     return rRotation(rMersenneTwister);
   }
-  int RandomNumberGenerator::getSeed (void) {
+  int RandomNumberGenerator::getSeed(void) {
     return currentSeed;
   }
 }
